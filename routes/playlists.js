@@ -21,13 +21,19 @@ router.get('/allPlaylists',auth,async(req,res)=>{
     var accessToken=await user.isAccessValid();
     console.log(accessToken);
     var play = await newSpotifyApi.getUserPlaylists(accessToken);
-    console.log(play.data);
     res.send(play.data);
     }
     catch (err){
         console.log(err.message);
     }
 });
+
+router.post('/playlist', auth, async(req,res)=>{
+    var user=await User.findById(req.user._id);
+    var accessToken=await user.isAccessValid();
+    var playlist= await newSpotifyApi.createPlaylist(accessToken, req.body.playlistName);
+    res.send(playlist);
+})
 
 module.exports=router;
 

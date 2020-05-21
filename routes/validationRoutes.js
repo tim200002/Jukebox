@@ -15,7 +15,7 @@ var newSpotifyApi= new NewSpotifyApi(
     process.env.redirect_uri
 )
 
-const scopes = 'user-read-private user-read-email playlist-read-private';
+const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private playlist-modify-public streaming';
 
 //Login User -> Used when User not logged in to spotify
 router.get('/LoginUser', auth,(req,res)=>{

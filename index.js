@@ -9,6 +9,7 @@ var http = require('http');
 var validationRoutes=require('./routes/validationRoutes');
 var userRoutes=require('./routes/user');
 var playlistRoutes=require('./routes/playlists');
+var searchRoutes= require('./routes/search')
 //Important for Environmet Variables -> when not in Producation load important variables from file
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -23,6 +24,7 @@ var scopes = 'user-read-private user-read-email playlist-read-private';
 app.use(express.json());
 app.use('/user', userRoutes);
 app.use('/playlist', playlistRoutes);
+app.use('/search', searchRoutes);
 app.use(validationRoutes);
 
 const port = process.env.PORT || 8080;

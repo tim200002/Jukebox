@@ -55,6 +55,7 @@ userSchema.methods.isAccessValid = function () {
             const ret=await newSpotifyApi.refreshAccesToken(this.refreshToken);
             this.accessToken=ret.acces_token;
             this.issueTime=Date.now();
+            this.save();
             resolve(this.accessToken);
         }
         else{

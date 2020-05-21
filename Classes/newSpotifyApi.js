@@ -76,7 +76,7 @@ class NewSpotifyApi {
         })
     }
 
-    //Functions to Interact with the API
+    //!Functions to Interact with the API
     getUserPlaylists(accessToken) {
         console.log("Get User Playlist");
         const config = {
@@ -84,6 +84,7 @@ class NewSpotifyApi {
                 'Authorization': "Bearer " + accessToken,
             }
         };
+ 
 
         return new Promise((resolve, reject) => {
             axios.get("https://api.spotify.com/v1/me/playlists", config)
@@ -93,6 +94,83 @@ class NewSpotifyApi {
                 .catch((err) => {
                     console.log(err.message);
                     reject("Couldnt get Playlists");
+                })
+        }
+        );
+    }
+
+    async createPlaylist(accessToken, PlaylistName){
+        console.log("Create Playlist");
+        const config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': "Bearer " + accessToken,
+            }
+        };
+        const reqBody={
+            name: PlaylistName,
+            public: "false"
+        };
+        //Get Current user
+        const userId= await this.getUserId(accessToken);
+        return new Promise((resolve, reject) => {
+            axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, reqBody, config)
+                .then((result) => {
+                    resolve(result.data);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                    reject("Couldnt Create Playlist");
+                })
+        }
+        );
+    }
+
+    getUserId(accessToken){
+        console.log("Get ID");
+        const config = {
+            headers: {
+                'Authorization': "Bearer " + accessToken,
+            }
+        };
+
+        return new Promise((resolve, reject) => {
+            axios.get("https://api.spotify.com/v1/me", config)
+                .then((result) => {
+                    resolve(result['data'].id);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                    reject("Couldnt get User Id");
+                })
+        }
+        );
+    }
+
+    //!Search only Tracks
+    search(accessToken, query, queryType="track", limit=5){
+        console.log("Search");
+        const config = {
+            params:{
+                q: query,
+                type: queryType,
+                limit: limit
+
+            },
+            headers: {
+                'Authorization': "Bearer " + accessToken,
+            }
+        };
+        
+       
+        return new Promise((resolve, reject) => {
+            axios.get(`https://api.spotify.com/v1/search`, config)
+                .then((result) => {
+                    resolve(result.data);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                    reject("Couldnt Search");
                 })
         }
         );
